@@ -9,6 +9,7 @@ import { useState, useEffect, useMemo } from "react";
  */
 
 export default function Tool() {
+	const [arch, setArch] = useState('x64');
 	const [version, setVersion] = useState('');
 	const [versions, setVersions] = useState([]);
 	const [loadingVersions, setLoadingVersions] = useState(false);
@@ -102,6 +103,28 @@ export default function Tool() {
 
 				{/* First Question*/}
 				<div className='w-full'>
+					<label htmlFor="arch" className='mb-1 block'>Do you have a preferred architecture?</label>
+					<Select
+						name="arch"
+						value={arch}
+						options={
+							[
+								{
+									name: 'x86_64',
+									value: 'x64',
+								},
+								{
+									name: 'ARM64',
+									value: 'arm64',
+								},
+							]
+						}
+						onChange={(v) => setArch(v)}
+					/>
+				</div>
+
+				{/* Second Question*/}
+				<div className='w-full'>
 					<label htmlFor="version" className='mb-1 block'>Do you have a preferred Node.js version?</label>
 					<Select
 						name="version"
@@ -112,7 +135,7 @@ export default function Tool() {
 					/>
 				</div>
 
-				{/* Second Question*/}
+				{/* Third Question*/}
 				<div className='w-full'>
 					<label htmlFor="package" className='mb-1 block'>What npm packages are you looking to install?</label>
 					<Select
