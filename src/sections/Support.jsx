@@ -21,7 +21,11 @@ export default function Support() {
 									Hire me
 								</a>
 							</td>
-							<td className='text-center p-4 border-2 border-[#000]'>Subscribe to my newsletter</td>
+							<td className='border-2 border-[#000] hover:bg-[#a388ec]'>
+								<a href='https://fuadop.kit.com/ac1a28f16a' className='block p-4 text-center' target='_blank'>
+									Subscribe to my newsletter
+								</a>
+							</td>
 						</tr>
 						<tr>
 							<td className='border-2 border-[#000] hover:bg-[#a388ec]'>
