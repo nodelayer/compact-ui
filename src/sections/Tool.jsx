@@ -200,22 +200,24 @@ export default function Tool() {
 											</tr>
 
 											<tr>
-												<td>
-													<div className='max-h-64 overflow-y-scroll overflow-x-hidden w-full relative z-[1]'>
+												<td className='relative'>
+													<div className='max-h-64 overflow-y-scroll overflow-x-hidden w-full z-[1]'>
 														<table className='table-fixed w-full border-collapse bg-[#a388ed]'>
 															<tbody>
 																{
 																	packages.map(pkg => (
-																		<tr key={pkg} className='border-b-2 border-[#000]'>
+																		<tr key={pkg} className='border-b-2 border-[#000] h-[50px]'>
 																			<td className='p-1'>{pkg}</td>
 																			<td className='py-1 px-2'>
-																				<Select
-																					name={`${pkg}-versions`}
-																					options={(packageVersions[pkg]?.versions ?? []).map(v => ({ name: v, value: v }))}
-																					value={packageVersions[pkg]?.version ?? ''}
-																					loading={packageVersions[pkg]?.loading ?? false}
-																					onChange={(v) => setPackageVersions(p => ({ ...p, [pkg]: { ...p[pkg], version: v }}))}
-																				/>
+																				<div className='absolute w-[46.5%] translate-y-[-22px] z-[1]'>
+																					<Select
+																						name={`${pkg}-versions`}
+																						options={(packageVersions[pkg]?.versions ?? []).map(v => ({ name: v, value: v }))}
+																						value={packageVersions[pkg]?.version ?? ''}
+																						loading={packageVersions[pkg]?.loading ?? false}
+																						onChange={(v) => setPackageVersions(p => ({ ...p, [pkg]: { ...p[pkg], version: v }}))}
+																					/>
+																				</div>
 																			</td>
 																		</tr>
 																	))
