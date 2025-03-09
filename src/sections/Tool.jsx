@@ -8,7 +8,11 @@ import { useState, useEffect, useMemo } from "react";
  * @property {string[]} versions
  */
 
-export default function Tool() {
+
+/**
+ * @param {import('react').PropsWithoutRef<{ onURLChange: (url: string) => any}>} props
+ */
+export default function Tool(props) {
 	const [arch, setArch] = useState('x64');
 	const [version, setVersion] = useState('');
 	const [versions, setVersions] = useState([]);
@@ -36,7 +40,7 @@ export default function Tool() {
 			}
 
 			setVersions(rows);
-			if (rows.length > 0) setVersion(rows[0]);
+			if (rows.length > 0) setVersion(rows[0]?.value);
 
 			setLoadingVersions(false);
 		};
@@ -84,6 +88,27 @@ export default function Tool() {
 		)) ?? [];
 	}, [packages]);
 
+	const url = useMemo(() => {
+		const host = 'https://api.nodelayer.xyz';
+		const path = `/${arch ?? 'x64'}/layers/generate`;
+
+		const pkgs = packages.map(
+			pkg => !!packageVersions?.[pkg]?.version === true ?
+				`${pkg}@${packageVersions[pkg].version}` :
+				pkg
+		);
+
+		const queryStrings = [
+			(!!version || !!versions?.[0]?.value) ? `version=${version || versions?.[0]?.value}` : undefined,
+			pkgs.length ? `packages=${pkgs.join(',')}` : undefined,
+		];
+
+		return `${host}${path}?${queryStrings.filter(q => q).join('&')}`;
+	}, [arch, version, versions, packages, packageVersions]);
+
+	useEffect(() => {
+		if (typeof props.onURLChange === 'function') props.onURLChange(url);
+	}, [props, url]);
 
   return (
 		<div className='p-4 text-[#000] border-b-4 border-[#000] bg-[#e3dff1]'>
