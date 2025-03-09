@@ -1,6 +1,8 @@
 import Button from "../common/Button";
 import Select from "../common/Select";
+import { useFilePicker } from 'use-file-picker';
 import { useState, useEffect, useMemo } from "react";
+import { FileTypeValidator } from 'use-file-picker/validators';
 /**
  * @typedef {Object} PackageVersion
  * @property {string} version
@@ -21,6 +23,39 @@ export default function Tool(props) {
 	const [prevOpts, setPrevOpts] = useState([]);
 	const [packages, setPackages] = useState([]);
 	const [packageVersions, setPackageVersions] = useState({});
+
+	const { openFilePicker } = useFilePicker(
+		{
+			readAs: 'Text',
+			accept: '.json',
+			multiple: false,
+			validators: [
+				new FileTypeValidator(['json']),
+			],
+			onFilesSuccessfullySelected: ({ filesContent }) => {
+				const file = filesContent[0];
+				const data = JSON.parse(file.content);
+
+				const _pkgs = [];
+				const _versions = {};
+
+				for (const dep in data.dependencies) {
+					_pkgs.push(dep);
+
+					const version = /\d+\.\d+\.\d+$/.exec(data.dependencies[dep]);
+					if (version)
+						_versions[dep] = {
+							loading: false,
+							version: version[0],
+							versions: [],
+						};
+				}
+
+				setPackageVersions(p => ({ ...p, ..._versions }));
+				setPackages(_pkgs);
+			},
+		},
+	);
 
 	useEffect(() => {
 		const loadVersions = async () => {
@@ -56,7 +91,7 @@ export default function Tool(props) {
 
 				if (!v.versions?.length && !v.loading) {
 					v.loading = true;
-					v.version = '';
+					v.version = v.version ?? '';
 					v.versions = [];
 
 					setPackageVersions(p => ({ ...p, [pkg]: v }));
@@ -120,7 +155,9 @@ export default function Tool(props) {
 					<p className='text-xs'>Upload your package.json file here to autofill form fields.</p>
 
 					<div className='mt-4'>
-						<Button>
+						<Button
+							onClick={() => openFilePicker()}
+						>
 							Upload
 						</Button>
 					</div>
@@ -225,7 +262,7 @@ export default function Tool(props) {
 											</tr>
 
 											<tr>
-												<td className='relative'>
+												<td>
 													<div className='max-h-64 overflow-y-scroll overflow-x-hidden w-full'>
 														<table className='table-fixed w-full border-collapse bg-[#a388ed]'>
 															<tbody>
@@ -234,15 +271,13 @@ export default function Tool(props) {
 																		<tr key={pkg} className='border-b-2 border-[#000] h-[50px]'>
 																			<td className='p-1'>{pkg}</td>
 																			<td className='py-1 px-2'>
-																				<div className='absolute w-[44%] sm:w-[46.5%] mt-[-22px]'>
-																					<Select
-																						name={`${pkg}-versions`}
-																						options={(packageVersions[pkg]?.versions ?? []).map(v => ({ name: v, value: v }))}
-																						value={packageVersions[pkg]?.version ?? ''}
-																						loading={packageVersions[pkg]?.loading ?? false}
-																						onChange={(v) => setPackageVersions(p => ({ ...p, [pkg]: { ...p[pkg], version: v }}))}
-																					/>
-																				</div>
+																				<Select
+																					name={`${pkg}-versions`}
+																					options={(packageVersions[pkg]?.versions ?? []).map(v => ({ name: v, value: v }))}
+																					value={packageVersions[pkg]?.version ?? ''}
+																					loading={packageVersions[pkg]?.loading ?? false}
+																					onChange={(v) => setPackageVersions(p => ({ ...p, [pkg]: { ...p[pkg], version: v }}))}
+																				/>
 																			</td>
 																		</tr>
 																	))

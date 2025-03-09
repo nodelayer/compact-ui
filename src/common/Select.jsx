@@ -1,4 +1,6 @@
 //import 'react-select-search/style.css'
+import { useMemo, useEffect } from 'react';
+import randomize from 'randomatic';
 import SelectSearch from 'react-select-search';
 import { ChevronDown,ChevronUp, Check, LoaderCircle } from 'lucide-react';
 
@@ -6,22 +8,40 @@ import { ChevronDown,ChevronUp, Check, LoaderCircle } from 'lucide-react';
  * @param {import('react-select-search').SelectSearchProps} props
  */
 export default function Select(props) {
+	const id = useMemo(() => randomize('Aa', 5), []);
+
+	useEffect(() => {
+		const shouldResize = () => {
+			const container = document.querySelector(`.${id}`);
+
+			const [, dropdown] = container.children;
+			dropdown.style.width = window.getComputedStyle(container).width;
+		};
+
+		shouldResize();
+		window.addEventListener('resize', shouldResize);
+
+		return () => {
+			window.removeEventListener('resize', shouldResize);
+		};
+	}, [props, id]);
+
 	return (
 		<SelectSearch
 			{...props}
 			search
 			className={
 				{
-					select: 'absolute top-12 bg-[#a388ed] rounded-sm border-2 border-[#000] hidden group-[.ss-is-focused]/ss-container:block w-full p-2 max-h-64 overflow-y-scroll overflow-x-hidden z-[2]',
+					select: 'absolute mt-[12px] bg-[#a388ed] rounded-sm border-2 border-[#000] hidden group-[.ss-is-focused]/ss-container:block p-2 max-h-64 overflow-y-scroll overflow-x-hidden z-[2]',
 					input: 'rounded-sm bg-[#a388ed] border-2 border-[#000] pl-5 pr-10 py-2 text-[#000] outline-none w-full',
-					container: 'group/ss-container relative w-full',
+					container: `group/ss-container w-full ${id}`,
 					'option': 'flex gap-1 justify-start items-center rounded-sm shadow-[#000] px-5 py-2 bg-[transparent] text-[#000] w-full cursor-pointer hover:ring-2',
 					'has-focus': 'ss-is-focused',
 				}
 			}
 			renderValue={(valueProps, snapshot, className) => {
 				return (
-					<div className=''>
+					<div className='relative'>
 						<input {...valueProps} className={className} />
 						{
 							(snapshot.fetching || props.loading) ?
