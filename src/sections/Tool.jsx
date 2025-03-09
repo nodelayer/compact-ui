@@ -201,7 +201,7 @@ export default function Tool() {
 
 											<tr>
 												<td className='relative'>
-													<div className='max-h-64 overflow-y-scroll overflow-x-hidden w-full z-[1]'>
+													<div className='max-h-64 overflow-y-scroll overflow-x-hidden w-full'>
 														<table className='table-fixed w-full border-collapse bg-[#a388ed]'>
 															<tbody>
 																{
@@ -209,7 +209,7 @@ export default function Tool() {
 																		<tr key={pkg} className='border-b-2 border-[#000] h-[50px]'>
 																			<td className='p-1'>{pkg}</td>
 																			<td className='py-1 px-2'>
-																				<div className='absolute w-[46.5%] translate-y-[-22px] z-[1]'>
+																				<div className='absolute w-[44%] sm:w-[46.5%] mt-[-22px]'>
 																					<Select
 																						name={`${pkg}-versions`}
 																						options={(packageVersions[pkg]?.versions ?? []).map(v => ({ name: v, value: v }))}
