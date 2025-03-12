@@ -31,7 +31,7 @@ export default function Support() {
 						</tr>
 						<tr>
 							<td className='border-2 border-[#000] hover:bg-[#a388ec]'>
-								<a href='https://github.com/nodelayer' className='block p-4 text-center' target='_blank'>
+								<a href='https://github.com/nodelayer/compact-api' className='block p-4 text-center' target='_blank'>
 									Star project on github
 								</a>
 							</td>

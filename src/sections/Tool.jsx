@@ -296,7 +296,7 @@ export default function Tool(props) {
 
 				{/* Generate Button */}
 				<div className='w-full'>
-					<Button>
+					<Button onClick={() => window.open(url, '_blank')}>
 						Generate
 					</Button>
 				</div>
