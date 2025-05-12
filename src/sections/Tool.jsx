@@ -263,7 +263,7 @@ export default function Tool(props) {
 
 											<tr>
 												<td>
-													<div className='max-h-64 overflow-y-scroll overflow-x-hidden w-full'>
+													<div className='overflow-x-hidden w-full'>
 														<table className='table-fixed w-full border-collapse bg-[#a388ed]'>
 															<tbody>
 																{
