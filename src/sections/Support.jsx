@@ -1,4 +1,4 @@
-import { Github, Twitter, Linkedin } from 'lucide-react';
+import { Github, Twitter, Linkedin, Youtube } from 'lucide-react';
 
 export default function Support() {
 	return (
@@ -54,6 +54,12 @@ export default function Support() {
 									<li>
 										<a href='https://linkedin.com/in/fuadop' target='_blank' className='block rounded-full border-2 border-[#fff] bg-[#000] text-[#fff] p-1'>
 											<Linkedin size={15} />
+										</a>
+									</li>
+
+									<li>
+										<a href='https://www.youtube.com/@fuadop' target='_blank' className='block rounded-full border-2 border-[#fff] bg-[#000] text-[#fff] p-1'>
+											<Youtube size={15} />
 										</a>
 									</li>
 								</ul>
